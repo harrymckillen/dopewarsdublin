@@ -14,6 +14,22 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/game',
+    name: 'Game',
+    component: () => import(/* webpackChunkName: "game" */ '../views/Game.vue'),
+    meta: {
+      title: "Game"
+    }
+  },
+  {
+    path: '/leaderboard',
+    name: 'Leaderboard',
+    component: () => import(/* webpackChunkName: "game" */ '../views/Leaderboard.vue'),
+    meta: {
+      title: "Leaderboard"
+    }
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
