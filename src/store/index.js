@@ -12,10 +12,10 @@ const defaultState = () => {
       items: [],
       bank: 0,
       cash: 2000,
-      health: 100
+      health: 99
     },
     game: {
-      location: 'City Centre',
+      location: {name: 'City Centre'},
       day: 0,
       dayLimit: 30
     }

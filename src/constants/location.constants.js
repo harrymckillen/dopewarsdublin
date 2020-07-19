@@ -1,10 +1,30 @@
 export const LOCATIONS = [
-  'Balbriggan',
-  'Dun Laoghaire',
-  'City Centre',
-  'Finglas',
-  'Dalkey',
-  'Clontarf',
-  'Ballsbridge',
-  'Ranelagh'
+  {
+    name: 'Balbriggan'
+  },
+  {
+    name: 'Dun Laoghaire'
+  },
+  {
+    name: 'City Centre',
+    bank: true
+  },
+  {
+    name: 'Finglas',
+    gundealer: true
+  },
+  {
+    name: 'Dalkey'
+  },
+  {
+    name: 'Clontarf',
+    loanshark: true
+  },
+  {
+    name: 'Ballsbridge',
+    hospital: true
+  },
+  {
+    name: 'Ranelagh'
+  }
 ];

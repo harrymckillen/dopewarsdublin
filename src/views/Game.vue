@@ -3,7 +3,7 @@
     <h1 class="text-lg">Game</h1>
     <div class="window" style="min-height:400px">
       <div class="title-bar">
-        <div class="title-bar-text">Dope Wars: Dublin, Day {{game.day}} of {{game.dayLimit}}</div>
+        <div class="title-bar-text">Dope Wars: Dublin - Day {{game.day}} of {{game.dayLimit}}</div>
         <div class="title-bar-controls">
           <button @click="exitGame" aria-label="Close"></button>
         </div>
@@ -18,7 +18,8 @@
           </div>
         </div>
         <hr />
-        <p>Location: {{game.location}}</p>
+        <CurrentLocation/>
+        <hr />
         <div class="flex">
           <div class="w-1/2">
             <select multiple class="w-full">
@@ -53,12 +54,14 @@
 import { mapState, mapActions } from "vuex";
 import Player from "@/components/Player";
 import Locations from "@/components/Locations";
+import CurrentLocation from "@/components/CurrentLocation";
 
 export default {
   name: "Game",
   components: {
     Player,
-    Locations
+    Locations,
+    CurrentLocation
   },
   computed: {
     ...mapState({
