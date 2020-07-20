@@ -15,7 +15,7 @@ const defaultState = () => {
       health: 99
     },
     game: {
-      location: {name: 'City Centre'},
+      location: { name: 'City Centre', bank: true },
       day: 0,
       dayLimit: 30
     }
@@ -24,6 +24,7 @@ const defaultState = () => {
 
 export default new Vuex.Store({
   state: defaultState(),
+  //TODO: split these out into modules
   mutations: {
     RESET_GAME(state){
       Object.assign(state, defaultState())

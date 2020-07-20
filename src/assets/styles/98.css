@@ -526,10 +526,14 @@ select[multiple] {
   padding-right: 0;
 }
 
-select:focus[multiple] option {
-  /* width: 100%; */
+select[multiple]:focus {
   background-color: #fff;
 }
+/*
+select[multiple] option[selected] {
+  background-color: #000;
+} */
+
 
 a {
   color: #00f;

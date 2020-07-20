@@ -6,11 +6,12 @@
       <span v-if="game.location.loanshark">(Loan Shark)</span>
       <span v-if="game.location.bank">(Bank)</span>
     </p>
-    <div class="mt-1">
+    <div class="mt-2">
       <button v-if="game.location.hospital && player.health < 100">Recover Health</button>
       <button v-if="game.location.gundealer">Buy Gun</button>
       <button v-if="game.location.loanshark">Pay Debt</button>
       <button v-if="game.location.bank">Lodge Money</button>
+      <button class="ml-1" v-if="game.location.bank">Withdraw Money</button>
     </div>
   </div>
 </template>
