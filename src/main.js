@@ -4,7 +4,10 @@ import router from './router'
 import store from './store'
 import './assets/styles/tw.css';
 import './assets/styles/98.css';
-// import '../node_modules/98.css/style.css';
+
+// import {rando } from './libs/rando-min.js';
+// Object.defineProperty(Vue.prototype, '$rando', { value: rando });
+// Vue.use(rando);
 
 
 Vue.config.productionTip = false

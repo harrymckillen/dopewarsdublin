@@ -9,8 +9,9 @@
         </div>
       </div>
       <div class="window-body">
-        <div class=" flex justify-center flex-wrap">
-          <button class="mt-16 h-12 w-2/3" @click="newGame">New Game</button>
+        <div class="flex justify-center flex-wrap">
+          <button class="mt-16 h-12 w-2/3" @click="goToGame">New Game</button>
+          <button v-if="game.inProgress" class="mt-3 h-12 w-2/3" @click="goToGame">Continue Game</button>
           <button class="mt-3 h-12 w-2/3" @click="leaderboard">Leaderboard</button>
         </div>
       </div>
@@ -20,26 +21,30 @@
 
 <script>
 // @ is an alias to /src
-// import { mapState } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "Home",
   components: {},
+  created() {},
+  data() {
+    return {};
+  },
   computed: {
-    // ...mapState({
-    //   debt: "debt"
-    // })
+    ...mapState({
+      game: "game",
+    }),
   },
   methods: {
-    exitGame(){
-      alert('There\'s no game to quit.')
+    exitGame() {
+      alert("There's no game to quit.");
     },
-    newGame(){
+    goToGame() {
       this.$router.push("/game");
     },
-    leaderboard(){
+    leaderboard() {
       this.$router.push("/leaderboard");
-    }
-  }
+    },
+  },
 };
 </script>

@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 const defaultState = () => {
-  return  {
+  return {
     player: {
       debt: 5500,
       pockets: 100,
@@ -17,7 +17,8 @@ const defaultState = () => {
     game: {
       location: { name: 'City Centre', bank: true },
       day: 0,
-      dayLimit: 30
+      dayLimit: 30,
+      inProgress: false
     }
   }
 }
@@ -26,7 +27,10 @@ export default new Vuex.Store({
   state: defaultState(),
   //TODO: split these out into modules
   mutations: {
-    RESET_GAME(state){
+    START_GAME(state) {
+      if (!state.game.inProgress) state.game.inProgress = true;
+    },
+    RESET_GAME(state) {
       Object.assign(state, defaultState())
     },
     MOVE_LOCATION(state, newLocation) {
@@ -45,11 +49,12 @@ export default new Vuex.Store({
   },
   actions: {
     moveLocation({ commit }, newLocation) {
+      commit('START_GAME');
       commit('MOVE_LOCATION', newLocation);
       commit('INCREMENT_DAY');
       commit('ADD_INTEREST', 10);
     },
-    resetGame({ commit }){
+    resetGame({ commit }) {
       commit('RESET_GAME');
     }
   },

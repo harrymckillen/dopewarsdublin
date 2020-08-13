@@ -22,19 +22,19 @@
         <hr />
         <div class="flex">
           <div class="w-1/2">
-            <select multiple class="w-full">
+            <select multiple class="w-full" size="5">
               <option>5 - Incredible!</option>
               <option>4 - Great!</option>
-              <option selected>3 - Pretty good</option>
+              <option>3 - Pretty good</option>
               <option>2 - Not so great</option>
               <option>1 - Unfortunate</option>
             </select>
           </div>
           <div class="w-1/2">
-            <select multiple class="w-full">
+            <select class="w-full">
               <option>5 - Incredible!</option>
               <option>4 - Great!</option>
-              <option selected>3 - Pretty good</option>
+              <option>3 - Pretty good</option>
               <option>2 - Not so great</option>
               <option>1 - Unfortunate</option>
             </select>
