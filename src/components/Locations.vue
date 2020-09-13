@@ -10,6 +10,7 @@
 <script>
 import { mapActions } from "vuex";
 import { LOCATIONS } from '@/constants/location.constants';
+
 export default {
   data() {
     return {

@@ -19,7 +19,7 @@
     </p>
     <p class="flex justify-between">
       <span>Items:</span>
-      <span>{{player.items.length}} / {{player.pockets}}</span>
+      <span>{{player.itemsTotal}} / {{player.pockets}}</span>
     </p>
     <p class="flex justify-between">
       <span>Health:</span>

@@ -15,20 +15,33 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 body {
-  background: #c0c0c0;
-}
-#nav {
-  padding: 20px;
-  text-align: center;
-}
-#nav a {
-  padding: 0 30px;
-  font-weight: bold;
-  color: #00f;
-}
-#nav a.router-link-exact-active {
-  color: purple;
+  background: #ff00b3;
+
+  #nav {
+    padding: 20px;
+    text-align: center;
+    a {
+      padding: 0 30px;
+      font-weight: bold;
+      color: #00f;
+
+      &.router-link-exact-active {
+        color: purple;
+      }
+    }
+  }
+  .default-window-height {
+    min-height: 400px;
+  }
+
+  .faux-select {
+    padding: 3px 4px;
+    box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
+    background-color: #fff;
+    box-sizing: border-box;
+    min-height: 170px;
+  }
 }
 </style>

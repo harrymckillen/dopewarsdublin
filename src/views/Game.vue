@@ -1,15 +1,20 @@
 <template>
   <div class="game w-full md:w-1/2 lg:w-1/3 mx-auto">
     <h1 class="text-lg">Game</h1>
-    <div class="window" style="min-height:400px">
+    <div class="window relative default-window-height">
+      <Modal action="Buy" :show="showModal">
+        Transcluded
+      </Modal>
       <div class="title-bar">
         <div class="title-bar-text">Dope Wars: Dublin - Day {{game.day}} of {{game.dayLimit}}</div>
         <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
           <button @click="exitGame" aria-label="Close"></button>
         </div>
       </div>
       <div class="window-body">
-        <div class="flex w-full pb-5" style="min-height:150px">
+        <div class="flex w-full pb-5">
           <div class="w-full md:w-1/2 mr-2">
             <Player />
           </div>
@@ -21,28 +26,19 @@
         <CurrentLocation/>
         <hr />
         <div class="flex">
-          <div class="w-1/2">
-            <select multiple class="w-full" size="5">
-              <option>5 - Incredible!</option>
-              <option>4 - Great!</option>
-              <option>3 - Pretty good</option>
-              <option>2 - Not so great</option>
-              <option>1 - Unfortunate</option>
-            </select>
+          <div class="w-full md:w-1/2 mr-2">
+            <Buy/>
           </div>
-          <div class="w-1/2">
-            <select class="w-full">
-              <option>5 - Incredible!</option>
-              <option>4 - Great!</option>
-              <option>3 - Pretty good</option>
-              <option>2 - Not so great</option>
-              <option>1 - Unfortunate</option>
-            </select>
+          <div class="w-full md:w-1/2">
+            <Sell/>
           </div>
         </div>
-        <div class="mt-4 flex flex-row-reverse">
-          <button class="ml-2" @click="exitGame">Exit</button>
-          <button @click="newGame">New Game</button>
+        <div class="mt-4 block">
+          <div class="flex flex-row-reverse">
+            <button class="ml-2" @click="exitGame">Exit</button>
+            <button @click="newGame">New Game</button>
+            <!-- <button @click="performAction">Show Modal</button> -->
+          </div>
         </div>
       </div>
     </div>
@@ -55,13 +51,24 @@ import { mapState, mapActions } from "vuex";
 import Player from "@/components/Player";
 import Locations from "@/components/Locations";
 import CurrentLocation from "@/components/CurrentLocation";
+import Modal from "@/components/Modal";
+import Buy from "@/components/Buy";
+import Sell from "@/components/Sell";
 
 export default {
   name: "Game",
+  data(){
+    return {
+      showModal: false
+    }
+  },
   components: {
     Player,
     Locations,
-    CurrentLocation
+    CurrentLocation,
+    Modal,
+    Buy,
+    Sell
   },
   computed: {
     ...mapState({
@@ -82,6 +89,9 @@ export default {
       if (window.confirm("Do you really want to reset the game?")) {
         this.resetGame();
       }
+    },
+    performAction() {
+      this.showModal = true;
     }
   }
 };
