@@ -1,10 +1,10 @@
 <template>
-  <div v-if="show" class="modal absolute center-modal">
+  <div v-if="displayModal" class="modal absolute center-modal">
     <div class="window">
       <div class="title-bar">
         <div class="title-bar-text">{{action}}</div>
         <div class="title-bar-controls">
-          <button aria-label="Close" @click="closeModal"></button>
+          <button aria-label="Close" @click="toggleModal"></button>
         </div>
       </div>
       <div class="window-body">
@@ -15,26 +15,30 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: 'Modal',
   props: {
-    action: String,
-    show: Boolean
-
+  },
+  computed: {
+    ...mapGetters({
+      displayModal: "displayModal"
+    })
   },
   methods: {
-    closeModal() {
-      this.show = !this.show;
-    }
+    ...mapActions({
+      toggleModal: 'toggleModal'
+    })
   }
 }
 </script>
 
 <style lang="scss" scoped>
   .center-modal {
-    width: 300px;
+    width: 70%;
     top: 20%;
     left: 50%;
-    margin-left: -150px;
+    margin-left: -35%;
   }
 </style>

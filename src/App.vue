@@ -42,6 +42,12 @@ body {
     background-color: #fff;
     box-sizing: border-box;
     min-height: 170px;
+
+    & > div:focus {
+      background-color: #1e90ff;
+      outline: #000 dotted 1px;
+      color: #fff;
+    }
   }
 }
 </style>

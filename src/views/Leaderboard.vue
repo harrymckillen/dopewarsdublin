@@ -16,6 +16,11 @@
           <h2 class="text-base">Why</h2>
           <p>Desire to expand my knowledge of Vue &amp; Vuex, outside of tutorials and articles etc. and, for fun, to build a clone of Dope Wars.</p>
         </main> -->
+        <select multiple style="width:300px;">
+          <option>Item 1</option>
+          <option>Item 2</option>
+          <option>Item 3</option>
+        </select>
       </div>
     </div>
   </div>

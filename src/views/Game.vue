@@ -2,7 +2,7 @@
   <div class="game w-full md:w-1/2 lg:w-1/3 mx-auto">
     <h1 class="text-lg">Game</h1>
     <div class="window relative default-window-height">
-      <Modal action="Buy" :show="showModal">
+      <Modal>
         Transcluded
       </Modal>
       <div class="title-bar">
@@ -23,7 +23,7 @@
           </div>
         </div>
         <hr />
-        <CurrentLocation/>
+          <CurrentLocation/>
         <hr />
         <div class="flex">
           <div class="w-full md:w-1/2 mr-2">
@@ -36,8 +36,8 @@
         <div class="mt-4 block">
           <div class="flex flex-row-reverse">
             <button class="ml-2" @click="exitGame">Exit</button>
-            <button @click="newGame">New Game</button>
-            <!-- <button @click="performAction">Show Modal</button> -->
+            <button class="ml-2" @click="newGame">New Game</button>
+            <button @click="toggleModal">Toggle Modal</button>
           </div>
         </div>
       </div>
@@ -57,11 +57,6 @@ import Sell from "@/components/Sell";
 
 export default {
   name: "Game",
-  data(){
-    return {
-      showModal: false
-    }
-  },
   components: {
     Player,
     Locations,
@@ -77,7 +72,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      resetGame: 'resetGame'
+      resetGame: 'resetGame',
+      toggleModal: 'toggleModal'
     }),
     exitGame() {
       if (window.confirm("Do you really want to exit the game?")) {
@@ -89,9 +85,6 @@ export default {
       if (window.confirm("Do you really want to reset the game?")) {
         this.resetGame();
       }
-    },
-    performAction() {
-      this.showModal = true;
     }
   }
 };

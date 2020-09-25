@@ -29,13 +29,21 @@ const defaultState = () => {
       itemsTotal: 50,
       bank: 0,
       cash: 2000,
-      location: { id: 3, name: 'City Centre', bank: true },
+      location: {
+        id: 3,
+        name: 'City Centre',
+        bank: true
+      },
       health: 99
     },
     game: {
       day: 0,
       dayLimit: 30,
-      inProgress: false
+      inProgress: false,
+      // currency: '&pound;'
+      // currency: '&#36;'
+      currency: '&euro;',
+      displayModal: false
     }
   };
 }
@@ -62,6 +70,9 @@ export default new Vuex.Store({
         state.player.debt =
           state.player.debt + Math.ceil((state.player.debt / 100) * percentage);
       }
+    },
+    TOGGLE_MODAL(state) {
+      state.game.displayModal = !state.game.displayModal;
     }
   },
   actions: {
@@ -73,9 +84,18 @@ export default new Vuex.Store({
     },
     resetGame({ commit }) {
       commit('RESET_GAME');
+    },
+    toggleModal({ commit }) {
+      commit('TOGGLE_MODAL');
     }
   },
   getters: {
+    getCurrency(state) {
+      return state.game.currency;
+    },
+    displayModal(state) {
+      return state.game.displayModal;
+    },
     getHeldItems(state) {
       return state.player.items;
     },
@@ -84,7 +104,7 @@ export default new Vuex.Store({
     },
     getItemsForSaleByLocation(state) {
       let availableForSaleHere = DRUGS.filter(function (drug) {
-        drug.cost = randomPrice(100, 700);
+        drug.cost = randomPrice(drug.minPrice, drug.maxPrice);
         return drug.availableIn.includes(state.player.location.id);
       });
 

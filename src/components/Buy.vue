@@ -2,10 +2,10 @@
   <fieldset class="">
     <legend>Buy</legend>
     <div class="w-full faux-select">
-      <span tabindex="0" class="flex justify-between" v-for="(drug, index) in forSaleItems" :key="index">
-        <span>{{drug.name}}</span>
-        <span>&euro; {{drug.cost}}</span>
-      </span>
+      <div tabindex="0" class="flex justify-between" v-for="(drug, index) in forSaleItems" :key="index">
+        <div>{{drug.name}}</div>
+        <div><span v-html="currency"></span> {{drug.cost}}</div>
+      </div>
     </div>
   </fieldset>
 </template>
@@ -16,7 +16,8 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters({
-      forSaleItems: "getItemsForSaleByLocation"
+      forSaleItems: "getItemsForSaleByLocation",
+      currency: "getCurrency"
     })
   }
 }
