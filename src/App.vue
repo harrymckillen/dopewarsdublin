@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="mt-8">
+  <div id="app">
     <router-view />
     <Header />
   </div>
@@ -19,7 +19,7 @@ export default {
 body {
   background: #ff00b3;
 
-  #nav {
+  .nav {
     padding: 20px;
     text-align: center;
     a {

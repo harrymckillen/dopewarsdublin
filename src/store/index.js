@@ -3,50 +3,34 @@ import Vuex from 'vuex';
 
 import { DRUGS } from '@/constants/drugs.constants';
 import { randomPrice } from '@/assets/utils/random.util';
+import { LOCATIONS } from '@/constants/location.constants';
 
 Vue.use(Vuex);
 
 const defaultState = () => {
   return {
     player: {
-      debt: 5500,
+      debt: 3000,
       pockets: 100,
       guns: 0,
-      items: [
-        {
-          id: 1,
-          name: 'Ecstasy',
-          qty: 20,
-          avgPrice: 5
-        },
-        {
-          id: 3,
-          name: 'Cocaine',
-          qty: 30,
-          avgPrice: 400
-        }
-      ],
-      itemsTotal: 50,
+      items: [],
+      itemsTotal: 0,
       bank: 0,
-      cash: 2000,
-      location: {
-        id: 3,
-        name: 'City Centre',
-        bank: true
-      },
-      health: 99
+      cash: 200,
+      location: LOCATIONS[2],
+      health: 75
     },
     game: {
       day: 0,
       dayLimit: 30,
       inProgress: false,
-      // currency: '&pound;'
-      // currency: '&#36;'
+      ended: false,
       currency: '&euro;',
-      displayModal: false
+      gunCost: 500,
+      healthCost: 10
     }
   };
-}
+};
 //TODO: split these out into modules
 
 export default new Vuex.Store({
@@ -63,16 +47,38 @@ export default new Vuex.Store({
     },
     INCREMENT_DAY(state) {
       if (state.game.day < state.game.dayLimit) state.game.day++;
-      else alert('End Game');
-    },
-    ADD_INTEREST(state, percentage) {
-      if (state.player.debt > 0) {
-        state.player.debt =
-          state.player.debt + Math.ceil((state.player.debt / 100) * percentage);
+      else {
+        state.game.ended = true;
       }
     },
-    TOGGLE_MODAL(state) {
-      state.game.displayModal = !state.game.displayModal;
+    ADD_INTEREST(state, percentage) {
+      if (state.player.debt > 0 && !state.game.ended) {
+        state.player.debt += Math.ceil((state.player.debt / 100) * percentage);
+      }
+    },
+    WITHDRAW_FUNDS(state, amount) {
+      if (state.player.bank >= amount) {
+        state.player.bank -= parseInt(amount);
+        state.player.cash += parseInt(amount);
+      }
+    },
+    DEPOSIT_FUNDS(state, amount) {
+      if (state.player.cash >= amount) {
+        state.player.cash -= parseInt(amount);
+        state.player.bank += parseInt(amount);
+      }
+    },
+    BUY_GUN(state) {
+      state.player.cash -= state.game.gunCost;
+      state.player.guns++;
+    },
+    TOP_UP_HEALTH(state) {
+      state.player.cash -= (100 - state.player.health) * state.game.healthCost;
+      state.player.health = 100;
+    },
+    REDUCE_DEBT(state, amount) {
+      state.player.cash -= parseInt(amount);
+      state.player.debt -= parseInt(amount);
     }
   },
   actions: {
@@ -85,25 +91,43 @@ export default new Vuex.Store({
     resetGame({ commit }) {
       commit('RESET_GAME');
     },
-    toggleModal({ commit }) {
-      commit('TOGGLE_MODAL');
+    withdrawFunds({ commit }, amount) {
+      commit('WITHDRAW_FUNDS', amount);
+    },
+    depositFunds({ commit }, amount) {
+      commit('DEPOSIT_FUNDS', amount);
+    },
+    buyGun({ commit }) {
+      commit('BUY_GUN');
+    },
+    topUpHealth({ commit }) {
+      commit('TOP_UP_HEALTH');
+    },
+    reduceDebt({ commit }, amount) {
+      commit('REDUCE_DEBT', amount);
     }
   },
   getters: {
     getCurrency(state) {
       return state.game.currency;
     },
-    displayModal(state) {
-      return state.game.displayModal;
+    getGunCost(state) {
+      return state.game.gunCost;
+    },
+    getHealthCost(state) {
+      return (100 - state.player.health) * state.game.healthCost;
     },
     getHeldItems(state) {
       return state.player.items;
     },
     getHeldItemsTotal(state) {
-      return state.player.itemsTotal
+      return state.player.itemsTotal;
+    },
+    getGameEnded(state) {
+      return state.game.ended;
     },
     getItemsForSaleByLocation(state) {
-      let availableForSaleHere = DRUGS.filter(function (drug) {
+      let availableForSaleHere = DRUGS.filter(function(drug) {
         drug.cost = randomPrice(drug.minPrice, drug.maxPrice);
         return drug.availableIn.includes(state.player.location.id);
       });

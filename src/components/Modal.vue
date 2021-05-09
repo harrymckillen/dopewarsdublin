@@ -1,44 +1,47 @@
 <template>
-  <div v-if="displayModal" class="modal absolute center-modal">
-    <div class="window">
-      <div class="title-bar">
-        <div class="title-bar-text">{{action}}</div>
-        <div class="title-bar-controls">
-          <button aria-label="Close" @click="toggleModal"></button>
+  <div v-show="visible" @click="closeModal" class="fixed w-full h-full overflow-hidden inset-0 z-10 bg-blue-800 bg-opacity-50 center-modal">
+    <div class="modal absolute w-11/12 md:w-3/5 lg:w-1/2 xl:w-1/3 z-20" @click.stop role="dialog" :aria-label="title">
+      <div class="window">
+        <div class="title-bar">
+          <div class="title-bar-text">{{title}}</div>
+          <div class="title-bar-controls" v-if="closeable">
+            <button aria-label="Close" @click="closeModal"></button>
+          </div>
         </div>
-      </div>
-      <div class="window-body">
-        <slot></slot>
+        <div class="window-body clearfix">
+          <slot></slot>
+        </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-
 export default {
-  name: 'Modal',
   props: {
-  },
-  computed: {
-    ...mapGetters({
-      displayModal: "displayModal"
-    })
+    title: String,
+    visible: Boolean,
+    closeable: Boolean
   },
   methods: {
-    ...mapActions({
-      toggleModal: 'toggleModal'
-    })
+    closeModal: function () {
+      this.$emit('close-modal');
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
   .center-modal {
-    width: 70%;
-    top: 20%;
-    left: 50%;
-    margin-left: -35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+  @media (min-width: 768px) {
+  .modal {
+    margin-top: -3em;
+  }
+}
+
 </style>

@@ -1,0 +1,12 @@
+* {
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .home,
+  .game,
+  .about,
+  .leaderboard {
+    margin-top: 3em;
+  }
+}

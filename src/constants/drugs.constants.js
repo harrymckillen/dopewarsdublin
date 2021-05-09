@@ -1,3 +1,12 @@
+/* id: 1, name: 'Balbriggan'
+id: 2, name: 'Dun Laoghaire'
+id: 3, name: 'City Centre',
+id: 4, name: 'Finglas',
+id: 5, name: 'Dalkey'
+id: 6, name: 'Clontarf',
+id: 7, name: 'Ballsbridge',
+id: 8, name: 'Ranelagh' */
+
 export const DRUGS = [
          {
             id: 1,

@@ -1,16 +1,16 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../views/Home.vue';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
     meta: {
-      title: "Home"
+      title: 'Home'
     }
   },
   {
@@ -18,15 +18,16 @@ Vue.use(VueRouter)
     name: 'Game',
     component: () => import(/* webpackChunkName: "game" */ '../views/Game.vue'),
     meta: {
-      title: "Game"
+      title: 'Game'
     }
   },
   {
     path: '/leaderboard',
     name: 'Leaderboard',
-    component: () => import(/* webpackChunkName: "game" */ '../views/Leaderboard.vue'),
+    component: () =>
+      import(/* webpackChunkName: "leaderboard" */ '../views/Leaderboard.vue'),
     meta: {
-      title: "Leaderboard"
+      title: 'Leaderboard'
     }
   },
   {
@@ -35,22 +36,23 @@ Vue.use(VueRouter)
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/About.vue'),
     meta: {
-      title: "About"
+      title: 'About'
     }
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title
-  next()
-})
+  document.title = to.meta.title;
+  next();
+});
 
-export default router
+export default router;

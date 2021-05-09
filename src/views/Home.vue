@@ -1,6 +1,6 @@
 <template>
-  <div class="home w-full md:w-1/2 lg:w-1/3 mx-auto">
-    <h1 class="text-lg">Home</h1>
+  <div class="home w-full md:w-3/5 lg:w-1/2 xl:w-1/3 mx-auto">
+
     <div class="window default-window-height">
       <div class="title-bar">
         <div class="title-bar-text">Dope Wars: Dublin</div>
@@ -23,12 +23,6 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "Home",
-  components: {},
-  created() {},
-  data() {
-    return {};
-  },
   computed: {
     ...mapState({
       game: "game",

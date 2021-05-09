@@ -23,7 +23,7 @@
     </div>
     <div class="mt-2 flex justify-between">
       <div>Health:</div>
-      <div>{{player.health}}</div>
+      <div>{{player.health}} %</div>
     </div>
   </fieldset>
 </template>
@@ -32,8 +32,6 @@
 import { mapState, mapGetters } from "vuex";
 
 export default {
-  name: "Game",
-  components: {},
   computed: {
     ...mapState({
       player: "player"
