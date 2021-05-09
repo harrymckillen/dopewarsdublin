@@ -1,11 +1,8 @@
-import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { DRUGS } from '@/constants/drugs.constants';
 import { randomPrice } from '@/assets/utils/random.util';
 import { LOCATIONS } from '@/constants/location.constants';
-
-Vue.use(Vuex);
 
 const defaultState = () => {
   return {
@@ -33,7 +30,7 @@ const defaultState = () => {
 };
 //TODO: split these out into modules
 
-export default new Vuex.Store({
+export default Vuex.createStore({
   state: defaultState(),
   mutations: {
     START_GAME(state) {

@@ -6,7 +6,8 @@
   .home,
   .game,
   .about,
-  .leaderboard {
+  .leaderboard,
+  .not-found {
     margin-top: 3em;
   }
 }
