@@ -1,7 +1,7 @@
 <template>
   <div>
     <Modal :title="modalTitle" :visible="isShown" :closeable="true" @close-modal="closeModal">
-      <div>
+      <div v-if="pocketSpace() !== 0">
         <p>How many units of {{selectedDrug.name}} would you like to buy?</p>
         <p>You can afford {{noOfUnits(selectedDrug.cost)}} units of {{selectedDrug.name}} but you only have space for {{pocketSpace()}} units. </p>
 
@@ -18,7 +18,10 @@
           </div>
         </div>
 
-        <button :disabled="amount == 0 || amount > pocketSpace()" @click="buyDrugs(type, amount); closeModal()" class="mt-2 float-right">Buy {{amount}} units</button>
+        <button :disabled="amount == 0 || amount > pocketSpace()" @click="buyDrugs({ 'name': selectedDrug.name, 'amount': amount, 'cost': selectedDrug.cost }); closeModal()" class="mt-2 float-right">Buy {{amount}} units</button>
+      </div>
+      <div v-else>
+        <p>You have no space in your pockets to be able to buy anything.</p>
       </div>
     </Modal>
 
@@ -36,7 +39,7 @@
 
 <script>
 import Modal from "@/components/Modal";
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   data (){
@@ -61,6 +64,9 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+      buyDrugs: "buyDrugs"
+    }),
     showModal(drug) {
       this.isShown = true;
       this.modalTitle = `Buy ${drug.name}`;

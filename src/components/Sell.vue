@@ -4,7 +4,7 @@
     <div class="w-full faux-select" v-if="items.length > 0">
       <div tabindex="0" class="flex justify-between" v-for="(item, index) in items" :key="index">
         <div>{{item.name}}</div>
-        <div><span v-html="currency"></span>  {{item.avgPrice}}</div>
+        <div><span v-html="currency"></span>  {{item.averageCost}}</div>
       </div>
     </div>
     <div v-else class="empty-pockets">
@@ -21,6 +21,10 @@ export default {
     ...mapGetters({
       items: "getHeldItems",
       currency: "getCurrency"
+    })
+  },
+  methods: {
+    ...mapGetters({
     })
   }
 }
