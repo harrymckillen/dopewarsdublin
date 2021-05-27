@@ -11,14 +11,14 @@ const defaultState = () => {
       pockets: 100,
       guns: 0,
       items: [
-        { name: 'Ecstasy', amount: 12, cost: 9 },
+        /* { name: 'Ecstasy', amount: 12, cost: 9 },
         { name: 'Ecstasy', amount: 5, cost: 10 },
         { name: 'Ecstasy', amount: 5, cost: 5 },
         { name: 'Ecstasy', amount: 5, cost: 1 },
         { name: 'Speed', amount: 5, cost: 7 },
         { name: 'Speed', amount: 10, cost: 20 },
         { name: 'Speed', amount: 4, cost: 3 },
-        { name: 'Speed', amount: 7, cost: 12 }
+        { name: 'Speed', amount: 7, cost: 12 } */
       ],
       itemsTotal: 17,
       bank: 0,
@@ -87,10 +87,27 @@ export default Vuex.createStore({
       state.player.debt -= parseInt(amount);
     },
     BUY_DRUGS(state, item) {
+      let total = item.cost * item.amount;
       item.amount = parseInt(item.amount);
-      state.player.items.push(item);
       state.player.itemsTotal += item.amount;
-      state.player.cash -= item.cost * item.amount;
+      state.player.cash -= total;
+      delete item.cost;
+
+      if (state.player.items.length > 0) {
+        console.log('Items: Not empty');
+        console.log(state.player.items);
+        // TODO: find drug key, and increment amount, prices and avg cost.
+      } else {
+        console.log('Items: Empty');
+        item.prices = [];
+        item.prices.push(total);
+        let average = Math.ceil(
+          item.prices.reduce((a, b) => a + b, 0) / item.amount
+        );
+        item.averageCost = average;
+        state.player.items.push(item);
+        console.log(state.player.items);
+      }
     }
   },
   actions: {
@@ -133,42 +150,7 @@ export default Vuex.createStore({
       return (100 - state.player.health) * state.game.healthCost;
     },
     getHeldItems(state) {
-      let o = {};
-      let average = 0;
-
-      let results = state.player.items.reduce(function(r, e) {
-        let key = e.name;
-        if (!o[key]) {
-          e.prices = [];
-          e.prices.push(e.cost * e.amount);
-          delete e.cost;
-          o[key] = e;
-          r.push(o[key]);
-        } else {
-          o[key].prices.push(e.cost * e.amount);
-          o[key].amount += e.amount;
-        }
-        return r;
-      }, []);
-
-      // console.log('====result====');
-      // console.log(results);
-      // console.log('/====result====');
-      results.forEach(function(result) {
-        // console.log(result.prices);
-        average = Math.ceil(
-          result.prices.reduce((a, b) => a + b, 0) / result.prices.length
-        );
-        console.log(average);
-        result.averageCost = average;
-      });
-      // console.log('====prices====');
-      // console.log(results[0].prices);
-      // console.log('/====prices====');
-      // // console.log(average);
-      // let result = state.player.items.map(a => a.name);
-      // return state.player.items;
-      return results;
+      return state.player.items;
     },
     getHeldItemsTotal(state) {
       return state.player.itemsTotal;

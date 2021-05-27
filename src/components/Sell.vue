@@ -5,6 +5,7 @@
       <div tabindex="0" class="flex justify-between" v-for="(item, index) in items" :key="index">
         <div>{{item.name}}</div>
         <div><span v-html="currency"></span>  {{item.averageCost}}</div>
+        <!-- <div><span v-html="currency"></span>  {{item.cost}}</div> -->
       </div>
     </div>
     <div v-else class="empty-pockets">
@@ -14,17 +15,17 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
+
   computed: {
+    ...mapState({
+      player: "player"
+    }),
     ...mapGetters({
       items: "getHeldItems",
       currency: "getCurrency"
-    })
-  },
-  methods: {
-    ...mapGetters({
     })
   }
 }
