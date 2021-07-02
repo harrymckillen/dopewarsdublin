@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <section>
     <Modal :title="modalTitle" :visible="isShown" :closeable="true" @close-modal="closeModal">
       <div v-if="pocketSpace() !== 0">
-        <p>How many units of {{selectedDrug.name}} would you like to buy?</p>
-        <p>You can afford {{noOfUnits(selectedDrug.cost)}} units of {{selectedDrug.name}} but you only have space for {{pocketSpace()}} units. </p>
+        <p>How many units of <strong>{{selectedDrug.name}}</strong> would you like to buy?</p>
+        <p>You can afford <strong>{{noOfUnits(selectedDrug.cost)}}</strong> units of <strong>{{selectedDrug.name}}</strong> but you only have space for <strong>{{pocketSpace()}}</strong> units. </p>
 
         <div class="field-row flex flex-wrap">
           <div class="w-full md:w-1/2 flex ml-0">
@@ -22,19 +22,24 @@
       </div>
       <div v-else>
         <p>You have no space in your pockets to be able to buy anything.</p>
+        <button @click="closeModal()" class="mt-2 float-right">Close</button>
       </div>
     </Modal>
 
     <fieldset>
-      <legend>Buy</legend>
-      <div class="w-full faux-select">
-        <div tabindex="0" @click="showModal(drug)" class="flex justify-between" v-for="(drug, index) in forSaleItems" :key="index">
+      <legend>Available drugs</legend>
+      <div role="listbox" class="w-full faux-select">
+        <div class="flex justify-between border-0 border-b border-solid border-gray-500 mb-1 bg-gray-300">
+          <div class="px-2 py-1">Drug</div>
+          <div class="px-2 py-1 border-0 border-l border-solid border-gray-500">Cost</div>
+        </div>
+        <div role="option" tabindex="0" @click="showModal(drug)" class="flex justify-between px-1 pb-1" v-for="(drug, index) in forSaleItems" :key="index">
           <div>{{drug.name}}</div>
           <div><span v-html="currency"></span> {{drug.cost}}</div>
         </div>
       </div>
     </fieldset>
-  </div>
+  </section>
 </template>
 
 <script>

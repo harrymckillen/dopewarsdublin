@@ -42,6 +42,8 @@ body {
     background-color: #fff;
     box-sizing: border-box;
     min-height: 170px;
+    max-height: 170px;
+    overflow: auto;
 
     & > div:focus {
       background-color: #1e90ff;

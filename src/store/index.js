@@ -10,19 +10,10 @@ const defaultState = () => {
       debt: 3000,
       pockets: 100,
       guns: 0,
-      items: [
-        /* { name: 'Ecstasy', amount: 12, cost: 9 },
-        { name: 'Ecstasy', amount: 5, cost: 10 },
-        { name: 'Ecstasy', amount: 5, cost: 5 },
-        { name: 'Ecstasy', amount: 5, cost: 1 },
-        { name: 'Speed', amount: 5, cost: 7 },
-        { name: 'Speed', amount: 10, cost: 20 },
-        { name: 'Speed', amount: 4, cost: 3 },
-        { name: 'Speed', amount: 7, cost: 12 } */
-      ],
-      itemsTotal: 17,
+      items: [],
+      itemsTotal: 0,
       bank: 0,
-      cash: 200,
+      cash: 20000,
       location: LOCATIONS[2],
       health: 75
     },
@@ -41,75 +32,92 @@ const defaultState = () => {
 
 export default Vuex.createStore({
   state: defaultState(),
+
   mutations: {
     START_GAME(state) {
       if (!state.game.inProgress) state.game.inProgress = true;
     },
+
     RESET_GAME(state) {
       Object.assign(state, defaultState());
     },
+
     MOVE_LOCATION(state, newLocation) {
       state.player.location = newLocation;
     },
+
     INCREMENT_DAY(state) {
       if (state.game.day < state.game.dayLimit) state.game.day++;
       else {
         state.game.ended = true;
       }
     },
+
     ADD_INTEREST(state, percentage) {
       if (state.player.debt > 0 && !state.game.ended) {
         state.player.debt += Math.ceil((state.player.debt / 100) * percentage);
       }
     },
+
     WITHDRAW_FUNDS(state, amount) {
       if (state.player.bank >= amount) {
         state.player.bank -= parseInt(amount);
         state.player.cash += parseInt(amount);
       }
     },
+
     DEPOSIT_FUNDS(state, amount) {
       if (state.player.cash >= amount) {
         state.player.cash -= parseInt(amount);
         state.player.bank += parseInt(amount);
       }
     },
+
     BUY_GUN(state) {
       state.player.cash -= state.game.gunCost;
       state.player.guns++;
     },
+
     TOP_UP_HEALTH(state) {
       state.player.cash -= (100 - state.player.health) * state.game.healthCost;
       state.player.health = 100;
     },
+
     REDUCE_DEBT(state, amount) {
       state.player.cash -= parseInt(amount);
       state.player.debt -= parseInt(amount);
     },
+
     BUY_DRUGS(state, item) {
+      let pockets = state.player.items;
       let total = item.cost * item.amount;
       item.amount = parseInt(item.amount);
       state.player.itemsTotal += item.amount;
       state.player.cash -= total;
       delete item.cost;
 
-      if (state.player.items.length > 0) {
-        console.log('Items: Not empty');
-        console.log(state.player.items);
-        // TODO: find drug key, and increment amount, prices and avg cost.
+      let foundIndex = pockets.findIndex(x => x.name === item.name);
+
+      if (foundIndex !== -1) {
+        pockets[foundIndex].prices.push(total);
+        pockets[foundIndex].amount += item.amount;
+        let average = Math.ceil(
+          pockets[foundIndex].prices.reduce((a, b) => a + b, 0) /
+            pockets[foundIndex].amount
+        );
+        pockets[foundIndex].averageCost = average;
       } else {
-        console.log('Items: Empty');
         item.prices = [];
         item.prices.push(total);
         let average = Math.ceil(
           item.prices.reduce((a, b) => a + b, 0) / item.amount
         );
         item.averageCost = average;
-        state.player.items.push(item);
-        console.log(state.player.items);
+        pockets.push(item);
       }
     }
   },
+
   actions: {
     moveLocation({ commit }, newLocation) {
       commit('START_GAME');
@@ -139,6 +147,7 @@ export default Vuex.createStore({
       commit('BUY_DRUGS', name, amount, cost);
     }
   },
+
   getters: {
     getCurrency(state) {
       return state.game.currency;
