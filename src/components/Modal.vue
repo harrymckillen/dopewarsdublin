@@ -1,5 +1,5 @@
 <template>
-  <div v-show="visible" @click="closeModal" tabindex="0" @keyup.esc="$emit('close-modal'); esc()" class="fixed w-full h-full overflow-hidden inset-0 z-10 bg-blue-800 bg-opacity-50 center-modal">
+  <div v-show="visible" @click="closeModal" tabindex="0" @keyup.esc="$emit('close-modal'); esc();" class="fixed w-full h-full overflow-hidden inset-0 z-10 bg-blue-800 bg-opacity-50 center-modal">
     <div class="modal absolute w-11/12 md:w-3/5 lg:w-1/2 xl:w-1/3 z-20" @click.stop role="dialog" :aria-label="title">
       <div class="window">
         <div class="title-bar">
@@ -27,8 +27,6 @@ export default {
   methods: {
     closeModal: function () {
       this.$emit('close-modal');
-      console.log('Close button clicked');
-
     },
     esc: function () {
       console.log('Esc key pressed');

@@ -29,13 +29,13 @@
     <fieldset>
       <legend>Available drugs</legend>
       <div role="listbox" class="w-full faux-select">
-        <div class="flex justify-between border-0 border-b border-solid border-gray-500 mb-1 bg-gray-300">
-          <div class="px-2 py-1">Drug</div>
-          <div class="px-2 py-1 border-0 border-l border-solid border-gray-500">Cost</div>
+        <div class="flex border-0 border-b border-solid border-gray-500 mb-1 bg-gray-300">
+          <div class="w-3/4 px-2 py-1">Drug</div>
+          <div class="w-1/4 px-2 py-1 border-0 border-l border-solid border-gray-500">Price</div>
         </div>
-        <div role="option" tabindex="0" @click="showModal(drug)" class="flex justify-between px-1 pb-1" v-for="(drug, index) in forSaleItems" :key="index">
-          <div>{{drug.name}}</div>
-          <div><span v-html="currency"></span> {{drug.cost}}</div>
+        <div role="option" tabindex="0" @click="showModal(drug)" class="flex px-1 pb-1" v-for="(drug, index) in forSaleItems" :key="index">
+          <div class="w-3/4">{{drug.name}}</div>
+          <div class="w-1/4 text-right"><span v-html="currency"></span> {{drug.cost}}</div>
         </div>
       </div>
     </fieldset>

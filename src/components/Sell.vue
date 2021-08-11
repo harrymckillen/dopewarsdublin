@@ -11,15 +11,24 @@
           How many units of <strong>{{ selectedDrug.name }}</strong> would you
           like to sell? You have
           <strong>{{ selectedDrug.amount }}</strong> units of
-          <strong>{{ selectedDrug.name }}</strong
-          >.
+          <strong>{{ selectedDrug.name }}</strong>.
         </p>
         <p>
           Average Purchase Price per Unit:
-          <strong
-            ><span v-html="currency"></span
-            >{{ selectedDrug.averageCost }}</strong
-          >
+          <strong>
+            <span v-html="currency"></span>
+            {{ selectedDrug.averageCost }}
+            </strong>
+        </p>
+        <p v-if="foundDrug.cost > selectedDrug.averageCost">
+          You stand to make a profit.
+          </p>
+        <p v-else>
+          You stand to make a loss. You'd be selling this for
+          <strong>
+            <span v-html="currency"></span>
+            {{ foundDrug.cost }}
+          </strong>
         </p>
 
         <div class="field-row flex flex-wrap">
@@ -51,7 +60,7 @@
         <button
           :disabled="amount == 0 || amount > selectedDrug.amount"
           @click="
-            sellDrug({
+            sellDrugs({
               name: selectedDrug.name,
               amount: amount,
               salePrice: selectedDrug.averageCost
@@ -69,27 +78,23 @@
       <legend>Pockets</legend>
       <div role="listbox" class="w-full faux-select" v-if="items.length > 0">
         <div
-          class="flex justify-between border-0 border-b border-solid border-gray-500 mb-1 bg-gray-300"
+          class="flex border-0 border-b border-solid border-gray-500 mb-1 bg-gray-300"
         >
-          <div class="px-2 py-1">Drug</div>
-          <div class="px-2 py-1 border-0 border-l border-solid border-gray-500">
-            Quantity
-          </div>
-          <div class="px-2 py-1 border-0 border-l border-solid border-gray-500">
-            Cost
-          </div>
+          <div class="w-1/2 px-2 py-1">Drug</div>
+          <div class="w-1/4 px-2 py-1 border-0 border-l border-solid border-gray-500">Qty</div>
+          <div class="w-1/4 px-2 py-1 border-0 border-l border-solid border-gray-500">Cost</div>
         </div>
         <div
           role="option"
           tabindex="0"
-          class="flex justify-between px-1 pb-1"
+          class="flex px-1 pb-1"
           v-for="(item, index) in items"
           :key="index"
-          @click="showModal(item)"
+          @click="showModal(item);"
         >
-          <div>{{ item.name }}</div>
-          <div>{{ item.amount }}</div>
-          <div><span v-html="currency"></span> {{ item.averageCost }}</div>
+          <div class="w-1/2">{{ item.name }}</div>
+          <div class="w-1/4 text-right">{{ item.amount }}</div>
+          <div class="w-1/4 text-right"><span v-html="currency"></span> {{ item.averageCost }}</div>
         </div>
       </div>
       <div v-else class="empty-pockets">
@@ -101,7 +106,7 @@
 
 <script>
 import Modal from "@/components/Modal";
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -110,7 +115,8 @@ export default {
       modalType: "",
       modalTitle: "",
       isShown: false,
-      selectedDrug: {}
+      selectedDrug: {},
+      foundDrug: {}
     };
   },
   components: {
@@ -121,12 +127,18 @@ export default {
       player: "player"
     }),
     ...mapGetters({
+      forSaleItems: "getCurrentItemsForSale",
       items: "getHeldItems",
       currency: "getCurrency"
     })
   },
   methods: {
+    ...mapActions({
+      sellDrugs: "sellDrugs"
+    }),
     showModal(drug) {
+      let foundIndex = this.forSaleItems.findIndex(x => x.name === drug.name);
+      this.foundDrug = this.forSaleItems[foundIndex];
       this.isShown = true;
       this.modalTitle = `Sell ${drug.name}`;
       this.selectedDrug = drug;
@@ -135,17 +147,15 @@ export default {
       this.isShown = false;
       this.modalTitle = "";
       this.selectedDrug = {};
+      this.foundDrug = {};
       this.amount = 0;
-    },
-    sellDrug(drug) {
-      console.log(drug);
     }
   }
 };
 </script>
 
 <style scoped>
-.empty-pockets {
-  min-height: 170px;
-}
+  .empty-pockets {
+    min-height: 170px;
+  }
 </style>

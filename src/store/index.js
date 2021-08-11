@@ -24,7 +24,8 @@ const defaultState = () => {
       ended: false,
       currency: '&euro;',
       gunCost: 500,
-      healthCost: 10
+      healthCost: 10,
+      currentlyForSale: {}
     }
   };
 };
@@ -99,21 +100,39 @@ export default Vuex.createStore({
       let foundIndex = pockets.findIndex(x => x.name === item.name);
 
       if (foundIndex !== -1) {
-        pockets[foundIndex].prices.push(total);
+        pockets[foundIndex].totalCost += total;
         pockets[foundIndex].amount += item.amount;
         let average = Math.ceil(
-          pockets[foundIndex].prices.reduce((a, b) => a + b, 0) /
-            pockets[foundIndex].amount
+          pockets[foundIndex].totalCost / pockets[foundIndex].amount
         );
         pockets[foundIndex].averageCost = average;
       } else {
-        item.prices = [];
-        item.prices.push(total);
-        let average = Math.ceil(
-          item.prices.reduce((a, b) => a + b, 0) / item.amount
-        );
+        item.totalCost = total;
+        let average = Math.ceil(item.totalCost / item.amount);
         item.averageCost = average;
         pockets.push(item);
+      }
+    },
+
+    SELL_DRUGS(state, item) {
+      let pockets = state.player.items;
+      let saleTotal = item.salePrice * item.amount;
+      let foundIndex = pockets.findIndex(x => x.name === item.name);
+
+      state.player.itemsTotal -= item.amount;
+      state.player.cash += saleTotal;
+
+      if (foundIndex !== -1) {
+        pockets[foundIndex].totalCost -= saleTotal;
+        pockets[foundIndex].amount -= item.amount;
+        let average = Math.ceil(
+          pockets[foundIndex].totalCost / pockets[foundIndex].amount
+        );
+        pockets[foundIndex].averageCost = average;
+
+        if (pockets[foundIndex].amount === 0) {
+          pockets.splice(foundIndex, 1);
+        }
       }
     }
   },
@@ -143,8 +162,11 @@ export default Vuex.createStore({
     reduceDebt({ commit }, amount) {
       commit('REDUCE_DEBT', amount);
     },
-    buyDrugs({ commit }, name, amount, cost) {
-      commit('BUY_DRUGS', name, amount, cost);
+    buyDrugs({ commit }, item) {
+      commit('BUY_DRUGS', item);
+    },
+    sellDrugs({ commit }, item) {
+      commit('SELL_DRUGS', item);
     }
   },
 
@@ -172,8 +194,11 @@ export default Vuex.createStore({
         drug.cost = randomPrice(drug.minPrice, drug.maxPrice);
         return drug.availableIn.includes(state.player.location.id);
       });
-
+      state.game.currentlyForSale = availableForSaleHere;
       return availableForSaleHere;
+    },
+    getCurrentItemsForSale(state) {
+      return state.game.currentlyForSale;
     }
   }
 });
