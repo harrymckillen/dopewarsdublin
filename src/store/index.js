@@ -2,6 +2,7 @@ import Vuex from 'vuex';
 
 import { DRUGS } from '@/constants/drugs.constants';
 import { randomPrice } from '@/assets/utils/random.util';
+import { save } from '@/assets/utils/localStorage.util';
 import { LOCATIONS } from '@/constants/location.constants';
 
 const defaultState = () => {
@@ -36,7 +37,10 @@ export default Vuex.createStore({
 
   mutations: {
     START_GAME(state) {
-      if (!state.game.inProgress) state.game.inProgress = true;
+      if (!state.game.inProgress) {
+        state.game.inProgress = true;
+        save('game', state);
+      }
     },
 
     RESET_GAME(state) {
@@ -146,6 +150,7 @@ export default Vuex.createStore({
     },
     resetGame({ commit }) {
       commit('RESET_GAME');
+      localStorage.removeItem('game');
     },
     withdrawFunds({ commit }, amount) {
       commit('WITHDRAW_FUNDS', amount);
