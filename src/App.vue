@@ -2,6 +2,9 @@
   <div id="app">
     <router-view />
     <Header />
+    <div v-if="$store.state.debug.length > 0" class="debug">
+      <pre>{{ $store.state.debug }}</pre>
+    </div>
   </div>
 </template>
 <script>
@@ -17,7 +20,7 @@ export default {
 
 <style lang="scss">
 body {
-  background: #ff00b3;
+  background: #666;
 
   .nav {
     padding: 20px;
@@ -38,7 +41,8 @@ body {
 
   .faux-select {
     padding: 3px 4px;
-    box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
+    box-shadow: inset -1px -1px #fff, inset 1px 1px grey,
+      inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
     background-color: #fff;
     box-sizing: border-box;
     min-height: 170px;

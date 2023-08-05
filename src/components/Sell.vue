@@ -11,18 +11,20 @@
           How many units of <strong>{{ selectedDrug.name }}</strong> would you
           like to sell? You have
           <strong>{{ selectedDrug.amount }}</strong> units of
-          <strong>{{ selectedDrug.name }}</strong>.
+          <strong>{{ selectedDrug.name }}</strong
+          >.
         </p>
         <p>
           Average Purchase Price per Unit:
           <strong>
             <span v-html="currency"></span>
             {{ selectedDrug.averageCost }}
-            </strong>
+          </strong>
         </p>
         <p v-if="foundDrug.cost > selectedDrug.averageCost">
-          You stand to make a profit.
-          </p>
+          You stand to make a profit. {{}} Drugs Cost: {{ foundDrug.cost }},
+          Drugs Average Price: {{ selectedDrug.averageCost }}
+        </p>
         <p v-else>
           You stand to make a loss. You'd be selling this for
           <strong>
@@ -63,7 +65,7 @@
             sellDrugs({
               name: selectedDrug.name,
               amount: amount,
-              salePrice: selectedDrug.averageCost
+              salePrice: foundDrug.cost
             });
             closeModal();
           "
@@ -81,8 +83,16 @@
           class="flex border-0 border-b border-solid border-gray-500 mb-1 bg-gray-300"
         >
           <div class="w-1/2 px-2 py-1">Drug</div>
-          <div class="w-1/4 px-2 py-1 border-0 border-l border-solid border-gray-500">Qty</div>
-          <div class="w-1/4 px-2 py-1 border-0 border-l border-solid border-gray-500">Cost</div>
+          <div
+            class="w-1/4 px-2 py-1 border-0 border-l border-solid border-gray-500"
+          >
+            Qty
+          </div>
+          <div
+            class="w-1/4 px-2 py-1 border-0 border-l border-solid border-gray-500"
+          >
+            Cost
+          </div>
         </div>
         <div
           role="option"
@@ -90,11 +100,13 @@
           class="flex px-1 pb-1"
           v-for="(item, index) in items"
           :key="index"
-          @click="showModal(item);"
+          @click="showModal(item)"
         >
           <div class="w-1/2">{{ item.name }}</div>
           <div class="w-1/4 text-right">{{ item.amount }}</div>
-          <div class="w-1/4 text-right"><span v-html="currency"></span> {{ item.averageCost }}</div>
+          <div class="w-1/4 text-right">
+            <span v-html="currency"></span> {{ item.averageCost }}
+          </div>
         </div>
       </div>
       <div v-else class="empty-pockets">
@@ -139,6 +151,7 @@ export default {
     showModal(drug) {
       let foundIndex = this.forSaleItems.findIndex(x => x.name === drug.name);
       this.foundDrug = this.forSaleItems[foundIndex];
+      console.log(this.foundDrug);
       this.isShown = true;
       this.modalTitle = `Sell ${drug.name}`;
       this.selectedDrug = drug;
@@ -155,7 +168,7 @@ export default {
 </script>
 
 <style scoped>
-  .empty-pockets {
-    min-height: 170px;
-  }
+.empty-pockets {
+  min-height: 170px;
+}
 </style>

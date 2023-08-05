@@ -27,7 +27,8 @@ const defaultState = () => {
       gunCost: 500,
       healthCost: 10,
       currentlyForSale: {}
-    }
+    },
+    debug: []
   };
 };
 //TODO: split these out into modules
@@ -65,6 +66,7 @@ export default Vuex.createStore({
     },
 
     WITHDRAW_FUNDS(state, amount) {
+      state.debug.push(`withdrawing fundss ${amount}`);
       if (state.player.bank >= amount) {
         state.player.bank -= parseInt(amount);
         state.player.cash += parseInt(amount);
@@ -72,6 +74,7 @@ export default Vuex.createStore({
     },
 
     DEPOSIT_FUNDS(state, amount) {
+      state.debug.push(`depositing fundss ${amount}`);
       if (state.player.cash >= amount) {
         state.player.cash -= parseInt(amount);
         state.player.bank += parseInt(amount);
@@ -94,6 +97,7 @@ export default Vuex.createStore({
     },
 
     BUY_DRUGS(state, item) {
+      state.debug.push(`depositing fundss ${item}`);
       let pockets = state.player.items;
       let total = item.cost * item.amount;
       item.amount = parseInt(item.amount);
