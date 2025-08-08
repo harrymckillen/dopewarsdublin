@@ -1,11 +1,10 @@
 module.exports = {
-  purge: {
-    enabled: false
-  },
-  target: 'relaxed',
+  content: [
+    "./public/index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+  ],
   prefix: '',
   important: true,
-  separator: ':',
   theme: {
     extend: {
       colors: {
